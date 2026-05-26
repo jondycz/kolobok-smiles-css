@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOLOBOK Smiles - CSS Emoticons Library</title>
+    <link rel="stylesheet" href="kolobok.min.css">
+    <style>
+        :root {
+            --primary: #ff6b35;
+            --primary-dark: #e55a2b;
+            --bg: #1a1a2e;
+            --surface: #16213e;
+            --surface-light: #0f3460;
+            --text: #eaeaea;
+            --text-muted: #a0a0b0;
+            --border: #2a2a4a;
+            --success: #4ecdc4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 1.5rem auto 0;
+        }
+
+        #search {
+            width: 100%;
+            padding: 0.75rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 2rem;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #search:focus {
+            border-color: var(--primary);
+        }
+
+        #search::placeholder {
+            color: var(--text-muted);
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem 2rem;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-tab {
+            padding: 0.5rem 1.25rem;
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .nav-tab:hover {
+            border-color: var(--primary);
+            color: var(--text);
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .category-section {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+            text-transform: capitalize;
+        }
+
+        .smiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .smile-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .smile-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.15);
+        }
+
+        .smile-card .smile-preview {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .smile-card .smile-name {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+        }
+
+        .smile-card .copy-feedback {
+            position: absolute;
+            inset: 0;
+            background: rgba(78, 205, 196, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .smile-card.copied .copy-feedback {
+            opacity: 1;
+        }
+
+        .usage-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .usage-section h2 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .usage-section code {
+            background: var(--bg);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--success);
+        }
+
+        .usage-section pre {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--success);
+        }
+
+        footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        footer .footer-links {
+            margin-top: 0.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .smiles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            }
+
+            .nav-tabs {
+                padding: 1rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>KOLOBOK Smiles CSS</h1>
+        <p>An unofficial CSS library for embedding <a href="http://www.en.kolobok.us" target="_blank" rel="noopener noreferrer" style="color: var(--primary)">KOLOBOK Smiles</a> in your web projects using simple class names. Click any smile to copy its HTML snippet.</p>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search smiles..." autocomplete="off">
+        </div>
+    </header>
+
+    <nav class="nav-tabs" id="navTabs">
+        <button class="nav-tab active" data-category="all">All</button>
+        <button class="nav-tab" data-category="standart">Standard</button>
+        <button class="nav-tab" data-category="sport">Sport</button>
+        <button class="nav-tab" data-category="rpg">RPG</button>
+        <button class="nav-tab" data-category="remake">Remake</button>
+        <button class="nav-tab" data-category="personal">Personal</button>
+        <button class="nav-tab" data-category="other">Other</button>
+        <button class="nav-tab" data-category="madhouse">Madhouse</button>
+        <button class="nav-tab" data-category="he_and_she">He &amp; She</button>
+    </nav>
+
+    <main>
+        <section class="usage-section">
+            <h2>Usage</h2>
+            <p>Include the CSS file in your HTML, then use a <code>&lt;span&gt;</code> element with the appropriate classes:</p>
+            <pre>&lt;link rel="stylesheet" href="kolobok.min.css"&gt;
+
+&lt;span class="kolobok acute"&gt;&lt;/span&gt;
+&lt;span class="kolobok dance"&gt;&lt;/span&gt;
+&lt;span class="kolobok kiss"&gt;&lt;/span&gt;</pre>
+        </section>
+
+        <div id="smilesContainer"></div>
+    </main>
+
+    <footer>
+        <p style="margin-bottom: 0.5rem;">This is an <strong>unofficial CSS wrapper library</strong> &mdash; it is not affiliated with or endorsed by the original author.</p>
+        <p>All artwork is created by and remains the property of <strong>Mantsurov Ivan (Aiwan)</strong> &copy; 2004&ndash;2010.</p>
+        <div class="footer-links">
+            <a href="http://www.en.kolobok.us" target="_blank" rel="noopener noreferrer">Original Project Website</a> &middot;
+            <a href="KOLOBOK/Copyright_en.txt" target="_blank">License &amp; Copyright</a>
+        </div>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+            Smiles are free for personal use. See the <a href="KOLOBOK/Copyright_en.txt" target="_blank">full license</a> for complete terms.
+        </p>
+    </footer>
+
+    <script>
+        const smiles = {
+            standart: ["acute","aggressive","agree","air_kiss","bad","beee","black_eye","blum2","blum3","blush","blush2","boast","boredom","censored","clapping","cray","cray2","dance","dance2","dance3","dance4","declare","derisive","dirol","dntknw","don-t_mention","download","drinks","fool","friends","good","good2","good3","grin","heat","help","i-m_so_happy","ireful1","ireful2","ireful3","kiss","laugh1","laugh2","laugh3","lazy","lazy2","lazy3","mda","meeting","mosking","nea","negative","no2","not_i","offtopic","ok","pardon","party","pleasantry","polling","popcorm1","popcorm2","punish","punish2","read","resent","rofl","sad","scare","scare2","sclerosis","scratch_one-s_head","search","secret","SHABLON_padonak_04","SHABLON_padonak_05","SHABLON_padonak_06","shout","smile3","smoke","snooks","sorry","sorry2","stink","stop","superstition","swoon","swoon2","take_example","taunt","thank_you","thank_you2","this","threaten","tongue","to_clue","to_take_umbrage","umnik","umnik2","unsure","victory","whistle","whistle2","whistle3","wink3","yahoo","yes","yes2","yes3","yes4","yu"],
+            sport: ["aikido","banned","dinamo","fans","fan_1","nhl","nhl2","nhl3","nhl_checking","nhl_crach","nhl_fight","phi","protest","shablon_01","shablon_02","shablon_03","shablon_04","spartak","training1","warning","warning2"],
+            rpg: ["assassin","butcher","dwarf","elf","girl_werewolf","jester","king","king2","orc","paladin","queen","vampire","wizard"],
+            remake: ["angry2","bb","bb2","biggrin","bye","close_tema","cool","crazy","fuk","haha","lol","mad","no","nono","nyam","ph34r","rtfm","shok","spiteful","tomato","tomato2","wacko","wink"],
+            personal: ["angel","beach","beta","big_boss","blind","brunette","buba","comando","ded_moroz","ded_snegurochka","ded_snegurochka2","diablo","hi","mamba","meowth","moil","morpheus","music","music2","neo","new_russian","padonak","paint","paint2","paint3","patsak","pig_ball","pioneer","pioneer_smoke","pogranichnik","pooh","pooh_birth_day","pooh_door","pooh_go","pooh_honey","pooh_lol","pooh_on_ball","rabbi","rap","russian","santa","santa2","santa3","scenic","scout","scout_en","snegurochka","sun_bespectacled","superman","superman2","tommy","to_keep_order","triniti","vinsent","wild"],
+            other: ["bomb","fie","flood","fuck","heart","skull","spam","spam_light","spam_light_en"],
+            madhouse: ["alcoholic","crazy_pilot","dash1","dash2","dash3","drag","focus","gamer1","gamer2","gamer3","gamer4","girl_crazy","girl_hospital","girl_wacko","hang1","hang2","hang3","hunter","locomotive","mail1","man_in_love","on_the_quiet","on_the_quiet2","pilot","prankster","prankster2","preved","russian_roulette","sarcastic","sarcastic_blum","sarcastic_hand","slow","slow_en","stinker","suicide","suicide2","suicide_fool-edit","tease","telephone","to_become_senile","to_pick_ones_nose","to_pick_ones_nose2","to_pick_ones_nose3","to_pick_ones_nose_eat","wacko","wacko2"],
+            he_and_she: ["buba_phone","curtsey","feminist","feminist_en","first_move","flirt","girl_blum","girl_blum2","girl_cray","girl_cray2","girl_cray3","girl_dance","girl_devil","girl_drink1","girl_drink2","girl_drink3","girl_drink4","girl_haha","girl_hide","girl_impossible","girl_in_love","girl_mad","girl_pinkglassesf","girl_prepare_fish","girl_sad","girl_sigh","girl_smile","girl_to_take_umbrage","girl_to_take_umbrage2","girl_wink","girl_witch","give_heart","give_rose","hysteric","kiss2","kiss3","parting","parting2","spruce_up","tender","to_babruysk"]
+        };
+
+        const categoryNames = {
+            standart: "Standard",
+            sport: "Sport",
+            rpg: "RPG",
+            remake: "Remake",
+            personal: "Personal",
+            other: "Other",
+            madhouse: "Madhouse",
+            he_and_she: "He & She"
+        };
+
+        const container = document.getElementById('smilesContainer');
+        const searchInput = document.getElementById('search');
+        const navTabs = document.getElementById('navTabs');
+        let activeCategory = 'all';
+
+        function createSmileCard(name) {
+            const card = document.createElement('div');
+            card.className = 'smile-card';
+            card.dataset.name = name;
+            card.innerHTML = `
+                <div class="smile-preview"><span class="kolobok ${name}"></span></div>
+                <div class="smile-name">${name}</div>
+                <div class="copy-feedback">Copied!</div>
+            `;
+            card.addEventListener('click', () => copyClass(name, card));
+            return card;
+        }
+
+        function copyClass(name, card) {
+            const html = `<span class="kolobok ${name}"></span>`;
+            navigator.clipboard.writeText(html).then(() => {
+                card.classList.add('copied');
+                setTimeout(() => card.classList.remove('copied'), 1200);
+            });
+        }
+
+        function render() {
+            const query = searchInput.value.toLowerCase().trim();
+            container.innerHTML = '';
+
+            for (const [category, names] of Object.entries(smiles)) {
+                if (activeCategory !== 'all' && activeCategory !== category) continue;
+
+                const filtered = names.filter(n => n.toLowerCase().includes(query));
+                if (filtered.length === 0) continue;
+
+                const section = document.createElement('section');
+                section.className = 'category-section';
+                section.innerHTML = `<h2 class="category-title">${categoryNames[category]}</h2>`;
+
+                const grid = document.createElement('div');
+                grid.className = 'smiles-grid';
+
+                filtered.forEach(name => grid.appendChild(createSmileCard(name)));
+                section.appendChild(grid);
+                container.appendChild(section);
+            }
+        }
+
+        navTabs.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('nav-tab')) return;
+            navTabs.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            e.target.classList.add('active');
+            activeCategory = e.target.dataset.category;
+            render();
+        });
+
+        searchInput.addEventListener('input', render);
+
+        render();
+    </script>
+</body>
+</html>

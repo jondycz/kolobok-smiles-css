@@ -1,0 +1,13 @@
+{
+  "name": "kolobok-smiles",
+  "version": "1.0.0",
+  "description": "KOLOBOK Smiles CSS library",
+  "scripts": {
+    "build:css": "sass kolobok.scss kolobok.css --no-source-map",
+    "build:min": "sass kolobok.scss kolobok.min.css --no-source-map --style=compressed",
+    "build": "npm run build:css && npm run build:min"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}

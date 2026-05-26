@@ -1,0 +1,100 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile SCSS to CSS
+        run: npm run build
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp kolobok.css kolobok.min.css index.html _site/
+          cp -r KOLOBOK _site/KOLOBOK
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kolobok-css
+          path: |
+            kolobok.css
+            kolobok.min.css
+            KOLOBOK/
+
+  deploy:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  release:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get version from package.json
+        id: version
+        run: echo "version=$(node -p \"require('./package.json').version\")" >> $GITHUB_OUTPUT
+
+      - name: Download release artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: kolobok-css
+          path: kolobok-css
+
+      - name: Create release zip
+        run: cd kolobok-css && zip -r ../kolobok-v${{ steps.version.outputs.version }}.zip .
+
+      - name: Create or update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: Kolobok Smiles v${{ steps.version.outputs.version }}
+          body: |
+            Compiled CSS and image assets for KOLOBOK Smiles v${{ steps.version.outputs.version }}.
+
+            **Files included:**
+            - `kolobok.css` — full CSS
+            - `kolobok.min.css` — minified CSS
+            - `KOLOBOK/` — smile image assets
+          files: kolobok-v${{ steps.version.outputs.version }}.zip
+          make_latest: true
