@@ -5,7 +5,7 @@
 */
 
 .kolobok {
-    vertical-align: bottom;
+    vertical-align: middle;
 
     &.acute::before { content: url("./KOLOBOK/aiwan_smiles/standart/acute.gif") }
     &.aggressive::before { content: url("./KOLOBOK/aiwan_smiles/standart/aggressive.gif") }
