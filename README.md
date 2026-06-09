@@ -36,7 +36,7 @@ Use a `<span>` (or any inline element) with the base class `kolobok` and the smi
 | Madhouse | `alcoholic`, `gamer1`, `pilot`, `prankster` |
 | He & She | `flirt`, `girl_dance`, `give_rose`, `kiss2` |
 
-Browse all smiles on the [demo website](../../deployments).
+Browse all smiles on the [demo website](https://jondycz.github.io/kolobok-smiles-css/).
 
 ## Building from Source
 
